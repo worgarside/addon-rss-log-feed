@@ -289,8 +289,9 @@ def log(level: str) -> Response:
     if (not isinstance(level, str)) or (
         level_num := NAME_TO_LEVEL.get(level.upper())
     ) is None:
-        LOGGER.error("Invalid log level: %s", level)
-        return Response(f"Invalid level: {str(level)!r}", status=400)
+        LOGGER.error("Invalid log level: %s", str(level))
+        
+        return Response(f"Invalid level: {str(level)!r}", status=400, mimetype="text/plain")
 
     try:
         log_payload = LogPayload.from_request(request)
