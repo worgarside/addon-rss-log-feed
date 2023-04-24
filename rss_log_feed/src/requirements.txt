@@ -1,0 +1,8 @@
+feedgen
+flask
+paramiko
+pydantic
+python-dotenv
+pytz
+requests
+wg-utilities[exceptions]
