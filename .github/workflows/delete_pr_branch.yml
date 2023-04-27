@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.WORGARSIDE_DEV_TOKEN }}
+    permissions:
+      contents: write
     steps:
       - name: Clone Repo
         uses: actions/checkout@v3
