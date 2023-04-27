@@ -33,7 +33,7 @@ jobs:
   set_release_label:
     name: Set Release Label
     runs-on: ubuntu-latest
-    # This dependency is just to ensure that the jobs don't interfere with each other
+    # This dependency is just to ensure that thejobs don't interfere with each other
     needs: set_labels
     if: |
       contains( toJson('["main", "homeassistant.local"]' ), github.base_ref) &&
