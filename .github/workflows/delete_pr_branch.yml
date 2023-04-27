@@ -11,8 +11,6 @@ jobs:
     name: Delete Branch on PR Merge
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.WORGARSIDE_DEV_TOKEN }}
     permissions:
       contents: write
     steps:
@@ -40,4 +38,6 @@ jobs:
             github.head_ref == 'master' ||
             github.head_ref == 'homeassistant.local'
           )
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORGARSIDE_DEV_TOKEN }}
         run: git push origin --delete $GITHUB_HEAD_REF
