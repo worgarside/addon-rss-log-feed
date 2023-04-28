@@ -1,7 +1,7 @@
 ---
 name: HA Remote Logger
 description: A custom API to add logs to HA
-version: 1.0.0
+version: 1.0.2
 slug: rss_log_feed
 init: false
 arch:

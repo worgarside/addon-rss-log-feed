@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "addon-rss-log-feed"
-version = "1.0.1"
+version = "1.0.2"
 description = ""
 authors = ["Will Garside <worgarside@gmail.com>"]
 license = "MIT"
