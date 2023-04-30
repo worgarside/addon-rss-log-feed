@@ -6,6 +6,10 @@
 		{
 			"name": "SSH FS - /addons",
 			"uri": "ssh://hasspi-addons/addons"
+		},
+		{
+			"name": "Scratchpads",
+			"path": "/Users/worgarside/Library/Application Support/Code/User/globalStorage/buenon.scratchpads/scratchpads"
 		}
 	],
 	"settings": {
@@ -15,5 +19,22 @@
 		"files.associations": {
 			"*.yaml": "home-assistant"
 		}
-	}
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Python: Current File",
+				"type": "python",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal",
+				"env": {
+					"PYTHONPATH": "${workspaceFolder}"
+				}
+			}
+		],
+		"compounds": []
+	},
+
 }
