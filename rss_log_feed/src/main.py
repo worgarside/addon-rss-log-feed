@@ -1,6 +1,7 @@
 """Custom addon to listen to the YAS-209 and post updates to HA."""
 from __future__ import annotations
 
+from base64 import b64decode
 from collections.abc import Mapping
 from datetime import datetime
 from io import StringIO
@@ -16,7 +17,6 @@ from flask import Flask, Request, Response, make_response, request
 from paramiko import AutoAddPolicy, RSAKey, SFTPClient, SSHClient
 from pydantic import BaseModel, Extra, ValidationError
 from wg_utilities.exceptions import on_exception
-from wg_utilities.functions import force_mkdir, user_data_dir
 from wg_utilities.loggers import add_list_handler, add_stream_handler
 
 load_dotenv()
@@ -64,11 +64,13 @@ SFTP_LOG_PATH = "/config/.addons/rss_log_feed"
 
 SFTP_HOSTNAME = getenv("SFTP_HOSTNAME", "null")  # Default to satisfy mypy
 SFTP_USERNAME = getenv("SFTP_USERNAME")
-SFTP_PRIVATE_KEY_STRING = getenv("SFTP_PRIVATE_KEY_STRING")
+SFTP_B64_PKEY_STRING = getenv("SFTP_B64_PKEY_STRING")
 
 SFTP_PRIVATE_KEY = (
-    RSAKey.from_private_key(StringIO(SFTP_PRIVATE_KEY_STRING))
-    if SFTP_PRIVATE_KEY_STRING
+    RSAKey.from_private_key(
+        StringIO(b64decode(SFTP_B64_PKEY_STRING.encode("utf-8")).decode("utf-8"))
+    )
+    if SFTP_B64_PKEY_STRING
     else None
 )
 
@@ -203,35 +205,18 @@ def log_record_to_sftp(record: LogRecord) -> None:
 
     log_str = _create_log_string(record)
 
+    if not SFTP_CREDS_PROVIDED:
+        LOGGER.warning(
+            "SFTP credentials not provided, skipping log record to SFTP server"
+        )
+        LOGGER.debug("Record: `%s`", log_str)
+        return
+
     with SFTP_CLIENT.open(
         datetime.fromtimestamp(record.created).strftime("%Y%m%d.log"), "a"
     ) as fout:
         fout.write(log_str)
         fout.write("\n")
-
-
-def log_record_to_local_temp(record: LogRecord) -> None:
-    """Log records to a flat file when they expire from the ListHandler.
-
-    Args:
-        record (LogRecord): the expired record
-    """
-
-    log_str = _create_log_string(record)
-
-    with open(
-        force_mkdir(
-            user_data_dir(
-                project_name="rss_log_feed",
-                file_name=datetime.fromtimestamp(record.created).strftime("%Y%m%d.log"),
-            ),
-            path_is_file=True,
-        ),
-        "a",
-        encoding="utf-8",
-    ) as fin:
-        fin.write(log_str)
-        fin.write("\n")
 
 
 @app.route("/feed/logs", methods=["GET"])
