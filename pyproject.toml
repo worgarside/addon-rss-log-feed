@@ -19,10 +19,9 @@ wg-utilities = {extras = ["exceptions"], version = "^3.6.0"}
 pytz = "^2023.3"
 
 [tool.poetry.group.dev.dependencies]
-
+black = "^23.3.0"
 
 #  Tool Configs
-black = "^23.3.0"
 
 [tool.black]
 include = '\.pyi?$'
