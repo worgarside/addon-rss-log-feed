@@ -15,11 +15,11 @@ options:
   log_ttl: 259200
   sftp_hostname: homeassistant.local
   sftp_username: root
-  sftp_private_key_string: <Paste your key here>
+  sftp_b64_pkey_string: <Paste your key here>
 schema:
   log_ttl: int
   sftp_hostname: str
   sftp_username: str
-  sftp_private_key_string: str
+  sftp_b64_pkey_string: str
 ports:
   8001/tcp: 8001
