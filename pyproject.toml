@@ -19,7 +19,7 @@ wg-utilities = {extras = ["exceptions"], version = "^3.11.3"}
 pytz = "^2023.3"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.7.0"
+black = "^23.9.1"
 
 #  Tool Configs
 
